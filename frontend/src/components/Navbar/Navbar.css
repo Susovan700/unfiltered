@@ -1,0 +1,125 @@
+/* ============================================================
+   UNFILTERED — Navbar
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,500;0,700;1,300&display=swap');
+
+:root {
+  --bg-void:       #050507;
+  --bg-surface:    #0e0e12;
+  --bg-glass:      rgba(255,255,255,0.04);
+  --border-glass:  rgba(255,255,255,0.08);
+  --accent-violet: #7C3AED;
+  --accent-cyan:   #06B6D4;
+  --glow-v:        rgba(124,58,237,0.3);
+  --text-primary:  #F0F0F5;
+  --text-muted:    #5a5a72;
+  --transition:    0.25s cubic-bezier(0.4,0,0.2,1);
+  --radius-pill:   50px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5%;
+  height: 62px;
+  background: rgba(5,5,7,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-glass);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  /* Top violet line */
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 4px 30px rgba(0,0,0,0.5);
+}
+.navbar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--accent-violet) 40%, var(--accent-cyan) 60%, transparent 100%);
+  opacity: 0.5;
+}
+
+/* ── Left side: logo + search ── */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.nav-logo a {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.7rem;
+  letter-spacing: 0.06em;
+  background: linear-gradient(135deg, #a78bfa, #7C3AED 50%, #06B6D4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+  filter: drop-shadow(2px 2px 0 rgba(124,58,237,0.3));
+  transition: filter var(--transition);
+  user-select: none;
+}
+.nav-logo a:hover {
+  filter: drop-shadow(2px 2px 0 rgba(124,58,237,0.6));
+}
+
+/* ── Right side: links + logout ── */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-links a {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+.nav-links a:hover {
+  color: var(--text-primary);
+  background: var(--bg-glass);
+  border-color: var(--border-glass);
+}
+
+.logout-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #f43f5e;
+  background: rgba(244,63,94,0.08);
+  border: 1px solid rgba(244,63,94,0.2);
+  padding: 7px 18px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+.logout-btn:hover {
+  background: rgba(244,63,94,0.16);
+  border-color: rgba(244,63,94,0.45);
+  box-shadow: 0 0 16px rgba(244,63,94,0.2);
+  transform: translateY(-1px);
+}
+.logout-btn:active { transform: translateY(0); }
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .navbar { padding: 0 4%; gap: 12px; }
+  .nav-links a { display: none; }
+  .nav-links { gap: 8px; }
+}
