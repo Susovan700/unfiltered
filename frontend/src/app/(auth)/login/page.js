@@ -1,19 +1,16 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "../../../utils/config";
 import "./login.css"; 
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const router = useRouter();
 
-  // Pick the base URL from env variables, fallback to localhost for development
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // Swapped hardcoded string for the variable
       const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -24,7 +21,6 @@ export default function LoginPage() {
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
-        // Added a check just in case user object is nested differently
         localStorage.setItem("userId", data.user?.id || data.user?._id);
         router.push("/feed");
       } else {
@@ -38,7 +34,7 @@ export default function LoginPage() {
 
   return (
     <div className="auth-container">
-      <div className="auth-card"> {/* Added a wrapper if needed for your CSS */}
+      <div className="auth-card">
         <h2>Login to Unfiltered</h2>
         <form onSubmit={handleLogin} className="auth-form">
           <input 
