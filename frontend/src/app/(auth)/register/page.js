@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { API_BASE_URL } from "../utils/config"; // ADD THIS IMPORT
 import "./register.css";
 
 export default function RegisterPage() {
@@ -11,7 +12,8 @@ export default function RegisterPage() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      // FIX: Use the variable instead of the localhost string
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -27,6 +29,7 @@ export default function RegisterPage() {
       }
     } catch (err) {
       console.error("Register error:", err);
+      alert("Network error. Make sure your backend is awake!");
     }
   };
 
