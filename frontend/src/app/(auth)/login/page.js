@@ -7,10 +7,14 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const router = useRouter();
 
+  // Pick the base URL from env variables, fallback to localhost for development
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      // Swapped hardcoded string for the variable
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -20,34 +24,40 @@ export default function LoginPage() {
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("userId", data.user.id);
+        // Added a check just in case user object is nested differently
+        localStorage.setItem("userId", data.user?.id || data.user?._id);
         router.push("/feed");
       } else {
         alert(data.message || "Login failed");
       }
     } catch (err) {
       console.error("Login error:", err);
+      alert("Network error. Make sure the backend is live.");
     }
   };
 
   return (
     <div className="auth-container">
-      <h2>Login to Unfiltered</h2>
-      <form onSubmit={handleLogin} className="auth-form">
-        <input 
-          type="email" 
-          placeholder="Email" 
-          onChange={(e) => setFormData({...formData, email: e.target.value})} 
-          required 
-        />
-        <input 
-          type="password" 
-          placeholder="Password" 
-          onChange={(e) => setFormData({...formData, password: e.target.value})} 
-          required 
-        />
-        <button type="submit" className="auth-btn">Login</button>
-      </form>
+      <div className="auth-card"> {/* Added a wrapper if needed for your CSS */}
+        <h2>Login to Unfiltered</h2>
+        <form onSubmit={handleLogin} className="auth-form">
+          <input 
+            type="email" 
+            placeholder="Email" 
+            className="auth-input"
+            onChange={(e) => setFormData({...formData, email: e.target.value})} 
+            required 
+          />
+          <input 
+            type="password" 
+            placeholder="Password" 
+            className="auth-input"
+            onChange={(e) => setFormData({...formData, password: e.target.value})} 
+            required 
+          />
+          <button type="submit" className="auth-btn">LOGIN</button>
+        </form>
+      </div>
     </div>
   );
 }
