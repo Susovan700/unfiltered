@@ -15,11 +15,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin: [
-    "http://localhost:3000", 
-    "https://unfiltered-beta.vercel.app"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: true, 
   credentials: true
 }));
 app.options(/(.*)/, cors());
