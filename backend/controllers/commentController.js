@@ -4,7 +4,10 @@ import Post from '../models/PostModel.js';
 export const addComment = async (req, res) => {
     try {
         const { content } = req.body;
-        const postId = req.params.postId;
+        // Use the ID from the URL (req.params.id) 
+        const postId = req.params.id; 
+
+        if (!content) return res.status(400).json({ message: "Comment content is required" });
 
         const newComment = new Comment({
             user: req.user.id,
@@ -14,13 +17,16 @@ export const addComment = async (req, res) => {
 
         const savedComment = await newComment.save();
 
-       
         await Post.findByIdAndUpdate(postId, {
             $push: { comments: savedComment._id }
         });
 
-        res.status(201).json(savedComment);
+        
+        const populatedComment = await savedComment.populate("user", "username profilePicture");
+
+        res.status(201).json(populatedComment);
     } catch (error) {
+        console.error("Comment Error:", error);
         res.status(500).json({ message: error.message });
     }
 };
