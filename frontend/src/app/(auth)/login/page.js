@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { API_BASE_URL } from "../../../utils/config"; // ADD THIS IMPORT
+import { API_BASE_URL } from "../../../utils/config.js"; 
 import "./login.css";
 
 export default function LoginPage() {
