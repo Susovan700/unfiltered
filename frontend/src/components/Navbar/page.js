@@ -22,6 +22,7 @@ export default function Navbar() {
       <div className="nav-links">
         <Link href="/feed">Feed</Link>
         <Link href="/profile">Profile</Link>
+        <span className="nav-divider" />
         <button onClick={handleLogout} className="logout-btn">
           Logout
         </button>

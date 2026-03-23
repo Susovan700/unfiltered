@@ -1,5 +1,5 @@
 import Post from "../models/PostModel.js";
-import Comment from "../models/CommentModel.js"; // CRITICAL: Must import to enable population
+import Comment from "../models/CommentModel.js"; 
 import cloudinary from '../utils/cloudinary.js';
 
 export const createPost = async (req, res) => {
@@ -26,7 +26,7 @@ export const createPost = async (req, res) => {
         });
         await newPost.save();
         
-        // Populate the user before sending back so the frontend can show the username immediately
+        
         const populatedPost = await newPost.populate("user", "username profilePicture");
         res.status(201).json(populatedPost);
     } catch (error) {
@@ -36,7 +36,7 @@ export const createPost = async (req, res) => {
 
 export const getAllPosts = async (req, res) => {
   try {
-    console.log("Fetching all posts..."); // Check if this hits your terminal
+    console.log("Fetching all posts...");
     
     const posts = await Post.find()
       .populate("user", "username profilePicture")
@@ -49,7 +49,7 @@ export const getAllPosts = async (req, res) => {
     console.log(`Successfully found ${posts.length} posts`);
     res.status(200).json(posts);
   } catch (error) {
-    console.error("DETAILED BACKEND ERROR:", error); // This will tell us the EXACT line failing
+    console.error("DETAILED BACKEND ERROR:", error); 
     res.status(500).json({ message: error.message, stack: error.stack });
   }
 };
@@ -87,5 +87,29 @@ export const deletePost = async (req, res) => {
         res.status(200).json({ message: "Post deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+export const addComment = async (req,res) => {
+    try{
+        const { content } = req.body;
+        const postId  = req.params.id;
+
+        const newComment = new Comment({
+            user: req.user.id,
+            post: postId,
+            content
+        });
+
+        await newComment.save();
+
+        const post = await Post.findById(postId);
+        post.comments.push(newComment._id);
+        await post.save();
+
+        const populatedComment = await newComment.populate("user", "username");
+        res.status(201).json(populatedComment);
+    }catch(error){
+        res.status(500).json({message: error.message});
     }
 };

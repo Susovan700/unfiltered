@@ -17,7 +17,7 @@ export default function FeedPage() {
 
   const fetchPosts = async () => {
     try {
-      // FIX 1: Use API_BASE_URL
+      
       const res = await fetch(`${API_BASE_URL}/api/posts`);
       const data = await res.json();
 
@@ -57,7 +57,7 @@ export default function FeedPage() {
       return;
 
     const token = localStorage.getItem("token");
-    // FIX 2: Use API_BASE_URL
+    
     const res = await fetch(`${API_BASE_URL}/api/posts/${postId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
@@ -77,7 +77,7 @@ export default function FeedPage() {
     formData.append("content", content);
     if (image) formData.append("image", image);
 
-    // FIX 3: Use API_BASE_URL
+    
     const res = await fetch(`${API_BASE_URL}/api/posts`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
@@ -94,7 +94,7 @@ export default function FeedPage() {
 
   const handleLike = async (postId) => {
     const token = localStorage.getItem("token");
-    // FIX 4: Use API_BASE_URL
+    
     const res = await fetch(`${API_BASE_URL}/api/posts/${postId}/like`, {
       method: "PUT",
       headers: { Authorization: `Bearer ${token}` },
@@ -106,7 +106,7 @@ export default function FeedPage() {
     const token = localStorage.getItem("token");
     if (!commentTexts[postId]) return;
 
-    // FIX 5: Use API_BASE_URL
+    
     const res = await fetch(
       `${API_BASE_URL}/api/posts/${postId}/comments`,
       {
