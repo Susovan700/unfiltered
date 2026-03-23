@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { API_BASE_URL } from "../../../utils/config"; // ADD THIS IMPORT
 import "./login.css";
 
 export default function LoginPage() {
@@ -13,7 +14,8 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      // FIX: Use API_BASE_URL instead of localhost string
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -23,13 +25,15 @@ export default function LoginPage() {
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("userId", data.user.id);
+        // Added optional chaining in case user ID is _id or id
+        localStorage.setItem("userId", data.user?.id || data.user?._id);
         router.push("/feed");
       } else {
         alert(data.message || "Login failed");
       }
     } catch (err) {
       console.error("Login error:", err);
+      alert("Network error. Please check if your backend is awake!");
     } finally {
       setLoading(false);
     }
