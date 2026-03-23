@@ -19,14 +19,7 @@ export default function FeedPage() {
     try {
       const res = await fetch(`${API_BASE_URL}/api/posts`);
       const data = await res.json();
-
-      if (Array.isArray(data)) {
-        setPosts(data);
-      } else if (data && Array.isArray(data.posts)) {
-        setPosts(data.posts);
-      } else {
-        setPosts([]);
-      }
+      setPosts(Array.isArray(data) ? data : data.posts || []);
     } catch (err) {
       console.error("Fetch error:", err);
       setPosts([]);
@@ -52,21 +45,13 @@ export default function FeedPage() {
   };
 
   const handleDelete = async (postId) => {
-    if (!window.confirm("Are you sure you want to delete this thought?"))
-      return;
-
+    if (!window.confirm("Are you sure you want to delete this thought?")) return;
     const token = localStorage.getItem("token");
-
     const res = await fetch(`${API_BASE_URL}/api/posts/${postId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
-
-    if (res.ok) {
-      fetchPosts();
-    } else {
-      alert("Could not delete post.");
-    }
+    if (res.ok) fetchPosts();
   };
 
   const handleCreatePost = async (e) => {
@@ -92,7 +77,6 @@ export default function FeedPage() {
 
   const handleLike = async (postId) => {
     const token = localStorage.getItem("token");
-
     const res = await fetch(`${API_BASE_URL}/api/posts/${postId}/like`, {
       method: "PUT",
       headers: { Authorization: `Bearer ${token}` },
@@ -114,18 +98,37 @@ export default function FeedPage() {
     });
 
     if (res.ok) {
-      const newComment = await res.json(); 
-
-      
+      const newComment = await res.json();
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
           post._id === postId
             ? { ...post, comments: [...post.comments, newComment] }
-            : post,
-        ),
+            : post
+        )
       );
-
       setCommentTexts({ ...commentTexts, [postId]: "" });
+    }
+  };
+
+  const handleDeleteComment = async (postId, commentId) => {
+    if (!window.confirm("Delete this reply?")) return;
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${API_BASE_URL}/api/posts/comments/${commentId}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.ok) {
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post._id === postId
+            ? { ...post, comments: post.comments.filter((c) => c._id !== commentId) }
+            : post
+        )
+      );
+    } else {
+      alert("Could not delete comment.");
     }
   };
 
@@ -143,37 +146,24 @@ export default function FeedPage() {
             onChange={(e) => setContent(e.target.value)}
             required
           />
-
           {previewUrl && (
             <div className="image-preview-container">
               <img src={previewUrl} alt="Preview" className="preview-img" />
               <button
                 type="button"
-                onClick={() => {
-                  setImage(null);
-                  setPreviewUrl(null);
-                }}
+                onClick={() => { setImage(null); setPreviewUrl(null); }}
                 className="remove-prev-btn"
               >
                 ✕
               </button>
             </div>
           )}
-
           <div className="form-actions">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              id="file-upload"
-              hidden
-            />
+            <input type="file" accept="image/*" onChange={handleImageChange} id="file-upload" hidden />
             <label htmlFor="file-upload" className="custom-file-upload">
               {image ? "Change Image" : "Add Image"}
             </label>
-            <button type="submit" className="post-btn">
-              Share Thought
-            </button>
+            <button type="submit" className="post-btn">Share Thought</button>
           </div>
         </form>
       </div>
@@ -184,7 +174,7 @@ export default function FeedPage() {
         <p>Loading...</p>
       ) : (
         <div className="posts-list">
-          {Array.isArray(posts) && posts.length > 0 ? (
+          {posts.length > 0 ? (
             posts.map((post) => (
               <div key={post._id} className="post-card">
                 <div className="post-header">
@@ -192,40 +182,30 @@ export default function FeedPage() {
                   <div className="header-right">
                     <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                     {post.user?._id === localStorage.getItem("userId") && (
-                      <button
-                        className="del-btn"
-                        onClick={() => handleDelete(post._id)}
-                      >
-                        🗑️
+                      <button className="del-btn" onClick={() => handleDelete(post._id)}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="3 6 5 6 21 6"/>
+                          <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+                          <path d="M10 11v6M14 11v6"/>
+                          <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+                        </svg>
                       </button>
                     )}
                   </div>
                 </div>
 
                 <p className="post-content">{post.content}</p>
-
-                {post.image && (
-                  <img src={post.image} className="post-img" alt="post" />
-                )}
+                {post.image && <img src={post.image} className="post-img" alt="post" />}
 
                 <div className="post-footer">
                   <button
                     className="like-btn"
                     onClick={() => handleLike(post._id)}
-                    style={{
-                      color: post.likes?.includes(
-                        localStorage.getItem("userId"),
-                      )
-                        ? "red"
-                        : "#888",
-                    }}
+                    style={{ color: post.likes?.includes(localStorage.getItem("userId")) ? "#f43f5e" : "#888" }}
                   >
                     ❤️ {post.likes?.length || 0}
                   </button>
-                  <button
-                    className="comment-toggle-btn"
-                    onClick={() => toggleComments(post._id)}
-                  >
+                  <button className="comment-toggle-btn" onClick={() => toggleComments(post._id)}>
                     💬 {post.comments?.length || 0}
                   </button>
                 </div>
@@ -237,22 +217,31 @@ export default function FeedPage() {
                         type="text"
                         placeholder="Write a reply..."
                         value={commentTexts[post._id] || ""}
-                        onChange={(e) =>
-                          setCommentTexts({
-                            ...commentTexts,
-                            [post._id]: e.target.value,
-                          })
-                        }
+                        onChange={(e) => setCommentTexts({ ...commentTexts, [post._id]: e.target.value })}
                       />
-                      <button onClick={() => handleComment(post._id)}>
-                        Reply
-                      </button>
+                      <button onClick={() => handleComment(post._id)}>Reply</button>
                     </div>
                     <div className="comments-list">
                       {post.comments?.map((c) => (
                         <div key={c._id} className="individual-comment">
-                          <strong>@{c.user?.username || "user"}:</strong>{" "}
-                          {c.content}
+                          <div className="comment-main">
+                            <strong>@{c.user?.username || "user"}:</strong>
+                            <span className="comment-text">{c.content}</span>
+                          </div>
+                          {(c.user?._id === localStorage.getItem("userId") || post.user?._id === localStorage.getItem("userId")) && (
+                            <button
+                              className="del-comment-btn"
+                              onClick={() => handleDeleteComment(post._id, c._id)}
+                              title="Delete reply"
+                            >
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+                                <path d="M10 11v6M14 11v6"/>
+                                <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+                              </svg>
+                            </button>
+                          )}
                         </div>
                       ))}
                     </div>

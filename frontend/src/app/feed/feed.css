@@ -1,12 +1,5 @@
-/* ============================================================
-   UNFILTERED — Feed Page
-   Theme: Glassmorphism × Neo-Brutalism hybrid
-   Palette: Deep blacks · Slate grays · Electric Violet · Neon Cyan
-   ============================================================ */
-
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,500;0,700;1,300&display=swap');
 
-/* ── CSS Variables (shared with page.css) ── */
 :root {
   --bg-void:        #050507;
   --bg-surface:     #0e0e12;
@@ -34,13 +27,11 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Page background ── */
 body {
   background-color: var(--bg-void);
   font-family: 'DM Sans', sans-serif;
 }
 
-/* ── Feed container ── */
 .feed-container {
   max-width: 620px;
   margin: 0 auto;
@@ -49,7 +40,6 @@ body {
   position: relative;
 }
 
-/* Subtle ambient glow anchored to page */
 .feed-container::before {
   content: '';
   position: fixed;
@@ -63,7 +53,6 @@ body {
   z-index: 0;
 }
 
-/* ── Section heading ── */
 .feed-container > h1 {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 1.5rem;
@@ -76,9 +65,6 @@ body {
   z-index: 1;
 }
 
-/* ============================================================
-   CREATE POST BOX
-   ============================================================ */
 .create-post-box {
   background: var(--bg-glass);
   backdrop-filter: blur(20px);
@@ -89,13 +75,13 @@ body {
   margin-bottom: 36px;
   position: relative;
   z-index: 1;
-  /* Glowing top edge */
   box-shadow:
     0 0 0 1px rgba(124, 58, 237, 0.08),
     0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
     0 20px 60px rgba(0, 0, 0, 0.5);
   transition: box-shadow var(--transition);
 }
+
 .create-post-box:focus-within {
   box-shadow:
     0 0 0 1px rgba(124, 58, 237, 0.3),
@@ -119,12 +105,12 @@ body {
   line-height: 1.6;
   caret-color: var(--accent-violet);
 }
+
 .create-post-box textarea::placeholder {
   color: var(--text-muted);
   font-style: italic;
 }
 
-/* ── Image preview ── */
 .image-preview-container {
   position: relative;
   margin: 12px 0;
@@ -134,12 +120,14 @@ body {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-glass);
 }
+
 .preview-img {
   width: 100%;
   height: auto;
   object-fit: cover;
   display: block;
 }
+
 .remove-prev-btn {
   position: absolute;
   top: 8px;
@@ -158,9 +146,9 @@ body {
   transition: background var(--transition);
   backdrop-filter: blur(8px);
 }
+
 .remove-prev-btn:hover { background: rgba(244, 63, 94, 0.7); }
 
-/* ── Form actions row ── */
 .form-actions {
   display: flex;
   justify-content: space-between;
@@ -185,6 +173,7 @@ body {
   transition: background var(--transition), color var(--transition), border-color var(--transition);
   user-select: none;
 }
+
 .custom-file-upload:hover {
   background: rgba(255,255,255,0.08);
   color: var(--text-primary);
@@ -208,6 +197,7 @@ body {
   position: relative;
   overflow: hidden;
 }
+
 .post-btn::after {
   content: '';
   position: absolute;
@@ -216,16 +206,16 @@ body {
   transform: translateX(-100%);
   transition: transform 0.5s ease;
 }
+
 .post-btn:hover::after { transform: translateX(100%); }
+
 .post-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 28px rgba(124, 58, 237, 0.55);
 }
+
 .post-btn:active { transform: translateY(0); }
 
-/* ============================================================
-   POST CARDS
-   ============================================================ */
 .posts-list {
   display: flex;
   flex-direction: column;
@@ -242,22 +232,17 @@ body {
   color: var(--text-primary);
   position: relative;
   overflow: hidden;
-
-  /* Floating effect */
   box-shadow:
     0 4px 6px rgba(0,0,0,0.4),
     0 12px 40px rgba(0,0,0,0.5),
     0 0 0 1px rgba(255,255,255,0.03) inset;
-
   transition:
     transform var(--transition),
     box-shadow var(--transition),
     border-color var(--transition);
-
   animation: card-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Staggered entrance for multiple cards */
 .post-card:nth-child(1) { animation-delay: 0.05s; }
 .post-card:nth-child(2) { animation-delay: 0.10s; }
 .post-card:nth-child(3) { animation-delay: 0.15s; }
@@ -269,7 +254,6 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Subtle violet left-border accent — neo-brutalist touch */
 .post-card::before {
   content: '';
   position: absolute;
@@ -282,6 +266,7 @@ body {
   transition: opacity var(--transition);
   border-radius: 2px;
 }
+
 .post-card:hover::before { opacity: 1; }
 
 .post-card:hover {
@@ -293,13 +278,13 @@ body {
     0 0 30px rgba(124, 58, 237, 0.08);
 }
 
-/* ── Card Header ── */
 .post-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
+
 .post-header strong {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.9rem;
@@ -307,11 +292,13 @@ body {
   color: var(--accent-cyan);
   letter-spacing: 0.03em;
 }
+
 .header-right {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .header-right span {
   font-size: 0.72rem;
   color: var(--text-muted);
@@ -319,21 +306,35 @@ body {
 }
 
 .del-btn {
-  background: none;
-  border: none;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-size: 0.9rem;
-  opacity: 0.3;
-  transition: opacity var(--transition), transform var(--transition);
-  padding: 2px;
-  line-height: 1;
-}
-.del-btn:hover {
-  opacity: 1;
-  transform: scale(1.2);
+  color: var(--text-muted);
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
+  padding: 0;
 }
 
-/* ── Post content ── */
+.del-btn:hover {
+  background: rgba(244, 63, 94, 0.12);
+  border-color: rgba(244, 63, 94, 0.3);
+  color: var(--accent-red);
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.2);
+}
+
+.del-btn:active { transform: scale(0.92); }
+
 .post-content {
   font-size: 1rem;
   font-weight: 300;
@@ -343,7 +344,6 @@ body {
   word-break: break-word;
 }
 
-/* ── Post image ── */
 .post-img {
   width: 100%;
   border-radius: var(--radius-sm);
@@ -352,12 +352,12 @@ body {
   animation: fadeIn 0.5s ease-in;
   border: 1px solid var(--border-glass);
 }
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-/* ── Post footer ── */
 .post-footer {
   display: flex;
   align-items: center;
@@ -386,6 +386,7 @@ body {
     transform var(--transition),
     box-shadow var(--transition);
 }
+
 .like-btn:hover {
   background: rgba(244, 63, 94, 0.12);
   border-color: rgba(244, 63, 94, 0.35);
@@ -393,6 +394,7 @@ body {
   transform: scale(1.06);
   box-shadow: 0 0 14px rgba(244, 63, 94, 0.2);
 }
+
 .like-btn:active { transform: scale(0.96); }
 
 .comment-toggle-btn {
@@ -414,6 +416,7 @@ body {
     border-color var(--transition),
     transform var(--transition);
 }
+
 .comment-toggle-btn:hover {
   background: rgba(124, 58, 237, 0.1);
   border-color: rgba(124, 58, 237, 0.35);
@@ -421,15 +424,13 @@ body {
   transform: scale(1.06);
 }
 
-/* ============================================================
-   COMMENT SECTION
-   ============================================================ */
 .comment-section {
   margin-top: 16px;
   border-top: 1px solid var(--border-glass);
   padding-top: 16px;
   animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -440,6 +441,7 @@ body {
   gap: 10px;
   margin-bottom: 14px;
 }
+
 .comment-input-group input {
   flex: 1;
   padding: 9px 16px;
@@ -453,14 +455,17 @@ body {
   transition: border-color var(--transition), box-shadow var(--transition);
   caret-color: var(--accent-cyan);
 }
+
 .comment-input-group input::placeholder {
   color: var(--text-muted);
   font-style: italic;
 }
+
 .comment-input-group input:focus {
   border-color: rgba(124, 58, 237, 0.45);
   box-shadow: 0 0 16px var(--accent-glow-v);
 }
+
 .comment-input-group button {
   padding: 8px 20px;
   background: linear-gradient(135deg, #7C3AED, #5B21B6);
@@ -476,36 +481,108 @@ body {
   transition: transform var(--transition), box-shadow var(--transition);
   box-shadow: 0 0 16px var(--accent-glow-v);
 }
+
 .comment-input-group button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 20px rgba(124, 58, 237, 0.5);
 }
 
-/* Individual comments */
 .comments-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
+
 .individual-comment {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.05);
   border-radius: var(--radius-sm);
-  padding: 9px 14px;
+  padding: 9px 10px 9px 14px;
   font-size: 0.85rem;
   color: var(--text-secondary);
   line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  transition: background var(--transition), border-color var(--transition);
 }
-.individual-comment strong {
+
+.individual-comment:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.09);
+}
+
+.comment-main {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: baseline;
+}
+
+.comment-main strong {
   color: var(--accent-cyan);
   font-weight: 600;
   font-size: 0.8rem;
-  margin-right: 4px;
+  white-space: nowrap;
 }
 
-/* ============================================================
-   LOADING + EMPTY STATES
-   ============================================================ */
+.comment-text {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.del-comment-btn {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity var(--transition),
+    transform var(--transition),
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    box-shadow var(--transition);
+  margin-top: 1px;
+  padding: 0;
+}
+
+.individual-comment:hover .del-comment-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.del-comment-btn:hover {
+  background: rgba(244, 63, 94, 0.12);
+  border-color: rgba(244, 63, 94, 0.3);
+  color: var(--accent-red);
+  box-shadow: 0 0 10px rgba(244, 63, 94, 0.2);
+}
+
+.del-comment-btn:active {
+  transform: scale(0.88);
+  background: rgba(244, 63, 94, 0.2);
+}
+
+@media (hover: none) {
+  .del-comment-btn {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+}
+
 .feed-container > p,
 .posts-list > p {
   color: var(--text-muted);
@@ -515,50 +592,19 @@ body {
   padding: 40px 0;
 }
 
-/* ============================================================
-   MOBILE RESPONSIVE
-   ============================================================ */
 @media (max-width: 640px) {
-  .feed-container {
-    padding: 20px 12px 80px;
-  }
-  .create-post-box {
-    padding: 16px;
-  }
-  .post-card {
-    padding: 16px;
-    border-radius: 14px;
-  }
-  .post-content {
-    font-size: 0.95rem;
-  }
-  .form-actions {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .post-btn {
-    flex: 1;
-    text-align: center;
-  }
-  .like-btn,
-  .comment-toggle-btn {
-    padding: 6px 12px;
-    font-size: 0.78rem;
-  }
-  .comment-input-group {
-    flex-direction: column;
-  }
-  .comment-input-group button {
-    width: 100%;
-    padding: 10px;
-  }
+  .feed-container { padding: 20px 12px 80px; }
+  .create-post-box { padding: 16px; }
+  .post-card { padding: 16px; border-radius: 14px; }
+  .post-content { font-size: 0.95rem; }
+  .form-actions { flex-wrap: wrap; gap: 10px; }
+  .post-btn { flex: 1; text-align: center; }
+  .like-btn, .comment-toggle-btn { padding: 6px 12px; font-size: 0.78rem; }
+  .comment-input-group { flex-direction: column; }
+  .comment-input-group button { width: 100%; padding: 10px; }
 }
 
 @media (max-width: 380px) {
-  .feed-container > h1 {
-    font-size: 1.1rem;
-  }
-  .post-header strong {
-    font-size: 0.8rem;
-  }
+  .feed-container > h1 { font-size: 1.1rem; }
+  .post-header strong { font-size: 0.8rem; }
 }
