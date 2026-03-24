@@ -1,11 +1,14 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation"; 
 import "./Navbar.css";
 import Search from "../Search/page.js";
 
 export default function Navbar() {
   const router = useRouter();
+  const pathname = usePathname(); 
+  const authPages = ["/", "/login", "/register"];
+  const isAuthPage = authPages.includes(pathname);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -17,15 +20,32 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="nav-logo">
         <Link href="/">Unfiltered</Link>
-        <Search />
+        
+        {!isAuthPage && <Search />}
       </div>
+
       <div className="nav-links">
-        <Link href="/feed">Feed</Link>
-        <Link href="/profile">Profile</Link>
-        <span className="nav-divider" />
-        <button onClick={handleLogout} className="logout-btn">
-          Logout
-        </button>
+        
+        {!isAuthPage ? (
+          <>
+            <Link href="/feed">Feed</Link>
+            <Link href="/profile">Profile</Link>
+            <span className="nav-divider" />
+            <button onClick={handleLogout} className="logout-btn">
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            
+            {pathname === "/" && (
+              <>
+                <Link href="/login">Login</Link>
+                <Link href="/register">Join Now</Link>
+              </>
+            )}
+          </>
+        )}
       </div>
     </nav>
   );

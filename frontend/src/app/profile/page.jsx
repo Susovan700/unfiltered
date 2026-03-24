@@ -76,7 +76,7 @@ export default function ProfilePage() {
         setIsEditing(false);
         setPreviewUrl(null);
         alert("Profile updated successfully!");
-        fetchUserData(); 
+        fetchUserData();
       } else {
         alert("Failed to update profile.");
       }
@@ -88,7 +88,7 @@ export default function ProfilePage() {
   const handleDeleteAccount = async () => {
     const confirmFirst = window.confirm("Are you sure? This removes everything forever.");
     if (confirmFirst) {
-      const confirmSecond = window.prompt("Type username to confirm:");
+      const confirmSecond = window.prompt("Type your username to confirm:");
       if (confirmSecond === user.username) {
         const userId = localStorage.getItem("userId");
         const token = localStorage.getItem("token");
@@ -116,7 +116,6 @@ export default function ProfilePage() {
             <img src={user.profilePicture} alt="DP" className="dp-img" />
           ) : (
             <span className="avatar-letter">
-              {/* Added a safety check here */}
               {user.username ? user.username[0].toUpperCase() : "U"}
             </span>
           )}
@@ -124,22 +123,37 @@ export default function ProfilePage() {
 
         {isEditing ? (
           <form onSubmit={handleUpdate} className="edit-form">
-            <input
-              type="text"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              className="edit-input"
-              placeholder="Username"
-              required
-            />
-            {/* Improved the button label here */}
-            <label className="file-label" style={{ cursor: 'pointer', color: '#6366f1' }}>
-              📷 Click here to change photo
-              <input type="file" accept="image/*" onChange={handlePhotoChange} hidden />
-            </label>
+            {/* Username field */}
+            <div className="edit-field-group">
+              <label className="edit-field-label">Username</label>
+              <input
+                type="text"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                className="edit-input"
+                placeholder="Your username"
+                required
+              />
+            </div>
+
+            {/* Photo upload */}
+            <div className="edit-field-group">
+              <label className="edit-field-label">Profile Photo</label>
+              <label className="file-label">
+                <span className="file-icon">📷</span>
+                {newPhoto ? newPhoto.name : "Click to change photo"}
+                <input type="file" accept="image/*" onChange={handlePhotoChange} hidden />
+              </label>
+            </div>
+
+            {/* Action buttons */}
             <div className="edit-actions">
               <button type="submit" className="save-btn">Save Changes</button>
-              <button type="button" onClick={() => { setIsEditing(false); setPreviewUrl(null); }} className="cancel-btn">
+              <button
+                type="button"
+                onClick={() => { setIsEditing(false); setPreviewUrl(null); setNewPhoto(null); }}
+                className="cancel-btn"
+              >
                 Cancel
               </button>
             </div>
@@ -168,9 +182,20 @@ export default function ProfilePage() {
         )}
       </div>
 
+      {/* Danger Zone — clean, minimal */}
       <div className="danger-zone">
-        <h3>Danger Zone</h3>
-        <button className="delete-acc-btn" onClick={handleDeleteAccount}>Delete Account</button>
+        <div className="danger-zone-header">
+          <span className="danger-dot" />
+          <h3>Danger Zone</h3>
+        </div>
+        <div className="danger-zone-body">
+          <p className="danger-zone-desc">
+            Permanently delete your account and all associated data. This cannot be undone.
+          </p>
+          <button className="delete-acc-btn" onClick={handleDeleteAccount}>
+            Delete Account
+          </button>
+        </div>
       </div>
     </div>
   );

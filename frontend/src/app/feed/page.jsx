@@ -195,7 +195,12 @@ export default function FeedPage() {
                 </div>
 
                 <p className="post-content">{post.content}</p>
-                {post.image && <img src={post.image} className="post-img" alt="post" />}
+
+                {post.image && (
+                  <div className="post-img-wrap">
+                    <img src={post.image} alt="post" />
+                  </div>
+                )}
 
                 <div className="post-footer">
                   <button

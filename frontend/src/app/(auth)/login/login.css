@@ -249,3 +249,13 @@ html, body {
   .auth-box { padding: 32px 20px 28px; }
   .auth-box h2, .auth-brand { font-size: 2.2rem; }
 }
+
+
+body {
+  overflow-y: scroll;
+}
+
+body::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
