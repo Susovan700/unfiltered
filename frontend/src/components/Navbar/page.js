@@ -21,7 +21,7 @@ export default function Navbar() {
       <div className="nav-logo">
         <Link href="/">Unfiltered</Link>
         
-        {!isAuthPage && <Search />}
+        {/* {!isAuthPage && <Search />} */}
       </div>
 
       <div className="nav-links">

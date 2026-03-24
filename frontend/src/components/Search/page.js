@@ -16,7 +16,7 @@ export default function Search() {
       try {
         const res = await fetch(`http://localhost:5000/api/users/search?query=${val}`);
         const data = await res.json();
-        // Ensure we handle array data correctly
+
         setResults(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Search error:", err);
@@ -27,7 +27,7 @@ export default function Search() {
     }
   };
 
-  // Close dropdown when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
